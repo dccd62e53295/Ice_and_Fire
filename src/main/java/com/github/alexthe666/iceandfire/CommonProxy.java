@@ -312,7 +312,7 @@ public class CommonProxy {
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
         if (event.getModID().equalsIgnoreCase(IceAndFire.MODID)) {
-            IceAndFire.syncConfig();
+            IceAndFire.CONFIG.onGuiChangeConfig();
         }
     }
 

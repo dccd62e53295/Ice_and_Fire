@@ -1,10 +1,23 @@
 package com.github.alexthe666.iceandfire.world.gen;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import com.github.alexthe666.iceandfire.block.BlockMyrmexConnectedResin;
 import com.github.alexthe666.iceandfire.block.BlockMyrmexResin;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
-import com.github.alexthe666.iceandfire.entity.*;
+import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
+import com.github.alexthe666.iceandfire.entity.EntityMyrmexQueen;
+import com.github.alexthe666.iceandfire.entity.EntityMyrmexRoyal;
+import com.github.alexthe666.iceandfire.entity.EntityMyrmexSentinel;
+import com.github.alexthe666.iceandfire.entity.EntityMyrmexSoldier;
+import com.github.alexthe666.iceandfire.entity.EntityMyrmexWorker;
+import com.github.alexthe666.iceandfire.entity.MyrmexHive;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
+import com.github.alexthe666.iceandfire.world.WorldGenStructTrait;
+import com.google.gson.JsonObject;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -13,24 +26,22 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-public class WorldGenMyrmexHive extends WorldGenerator {
+public class WorldGenMyrmexHive extends WorldGenerator implements WorldGenStructTrait{
 
     private static final IBlockState DESERT_RESIN = IafBlockRegistry.myrmex_resin.getDefaultState();
     private static final IBlockState STICKY_DESERT_RESIN = IafBlockRegistry.myrmex_resin_sticky.getDefaultState();
     private static final IBlockState JUNGLE_RESIN = IafBlockRegistry.myrmex_resin.getDefaultState().withProperty(BlockMyrmexResin.VARIANT, BlockMyrmexResin.EnumType.JUNGLE);
     private static final IBlockState STICKY_JUNGLE_RESIN = IafBlockRegistry.myrmex_resin_sticky.getDefaultState().withProperty(BlockMyrmexResin.VARIANT, BlockMyrmexResin.EnumType.JUNGLE);
-    public MyrmexHive hive;
-    private int entrances = 0;
-    private int totalRooms;
-    private boolean hasFoodRoom;
-    private boolean hasNursery;
-    private boolean small;
-    private boolean jungle;
+    public MyrmexHive hive=null;// @return
+    private int entrances;// @local
+    private int totalRooms;// @local
+    private boolean hasFoodRoom;// @local
+    private boolean hasNursery;// @local
+    private boolean small= false;// @param
+    private boolean jungle= false;// @param
 //    private BlockPos centerOfHive;
+    
+    public WorldGenMyrmexHive() {}
 
     public WorldGenMyrmexHive(boolean small, boolean jungle) {
         this.small = small;
@@ -38,20 +49,20 @@ public class WorldGenMyrmexHive extends WorldGenerator {
     }
 
     @Override
-    public boolean generate(World worldIn, Random rand, BlockPos position) {
-        hasFoodRoom = false;
-        hasNursery = false;
-        totalRooms = 0;
+    public final boolean generate(World worldIn, Random rand, BlockPos position) {
+    	this.hasFoodRoom = false;
+    	this.hasNursery = false;
+    	this.totalRooms = 0;
+    	this.entrances = 0;
         BlockPos undergroundPos = new BlockPos(position.getX(), position.getY(), position.getZ());
-        entrances = 0;
 //        centerOfHive = undergroundPos;
         generateMainRoom(worldIn, rand, undergroundPos);
-        this.small = false;
+        //this.small = false;
         return false;
     }
 
     private void generateMainRoom(World world, Random rand, BlockPos position) {
-        hive = new MyrmexHive(world, position, 100);
+        this.hive = new MyrmexHive(world, position, 100);
         MyrmexWorldData.addHive(world, hive);
         IBlockState resin = jungle ? JUNGLE_RESIN : DESERT_RESIN;
         IBlockState sticky_resin = jungle ? STICKY_JUNGLE_RESIN : STICKY_DESERT_RESIN;
@@ -507,4 +518,18 @@ public class WorldGenMyrmexHive extends WorldGenerator {
         }
 
     }
+
+	@Override
+	public void fromJson(JsonObject p1) {
+		this.small=p1.get("small").getAsBoolean();
+		this.jungle=p1.get("jungle").getAsBoolean();
+	}
+
+	@Override
+	public JsonObject toJson() {
+		JsonObject v1=new JsonObject();
+		v1.addProperty("small", this.small);
+		v1.addProperty("jungle", this.jungle);
+		return v1;
+	}
 }

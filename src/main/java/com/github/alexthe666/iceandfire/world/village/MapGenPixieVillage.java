@@ -1,6 +1,13 @@
 package com.github.alexthe666.iceandfire.world.village;
 
-import com.github.alexthe666.iceandfire.IceAndFire;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
+
+import com.github.alexthe666.iceandfire.world.WorldGenStructTrait;
+import com.google.gson.JsonObject;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -11,36 +18,31 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-
-public class MapGenPixieVillage extends WorldGenerator {
+public class MapGenPixieVillage extends WorldGenerator implements WorldGenStructTrait{
 //    private final int minTownSeparation;
-    private int size;
-    private int distance;
+    private int size=5;// 0~
+    private int distance=9;// 9~
 
     public MapGenPixieVillage() {
-        this.distance = 9;
+//        this.distance = 9;
 //        this.minTownSeparation = 4;
-        this.size = IceAndFire.CONFIG.pixieVillageSize;
+//        this.size = IceAndFire.CONFIG.pixieVillageSize;
     }
 
     public MapGenPixieVillage(Map<String, String> map) {
         this();
         for (Entry<String, String> entry : map.entrySet()) {
             if (entry.getKey().equals("size")) {
-                this.size = MathHelper.getInt(entry.getValue(), this.size, 0);
+                this.size = MathHelper.getInt(entry.getValue(), this.size);
             } else if (entry.getKey().equals("distance")) {
-                this.distance = MathHelper.getInt(entry.getValue(), this.distance, 9);
+                this.distance = MathHelper.getInt(entry.getValue(), this.distance);
             }
         }
     }
 
     @Override
     public boolean generate(World world, Random rand, BlockPos position) {
-        this.distance = 9;
+        //this.distance = 9;
         boolean canSpawn = canSpawnStructureAtCoords(world, position.getX() >> 4, position.getZ() >> 4);
         int new_size = 32;
         getStructureStart(world, position.getX() >> 4, position.getZ() >> 4, rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
@@ -51,7 +53,7 @@ public class MapGenPixieVillage extends WorldGenerator {
         return "PixieVillage";
     }
 
-    protected boolean canSpawnStructureAtCoords(World world, int chunkX, int chunkZ) {
+    private boolean canSpawnStructureAtCoords(World world, int chunkX, int chunkZ) {
         int i = chunkX;
         int j = chunkZ;
         if (chunkX < 0) {
@@ -129,4 +131,18 @@ public class MapGenPixieVillage extends WorldGenerator {
             this.hasMoreThanTwoComponents = tagCompound.getBoolean("Valid");
         }
     }
+
+	@Override
+	public void fromJson(JsonObject p1) {
+		this.size=p1.get("size").getAsInt();
+		this.distance=p1.get("distance").getAsInt();
+	}
+
+	@Override
+	public JsonObject toJson() {
+		JsonObject v1=new JsonObject();
+		v1.addProperty("size", this.size);
+		v1.addProperty("distance", this.distance);
+		return v1;
+	}
 }

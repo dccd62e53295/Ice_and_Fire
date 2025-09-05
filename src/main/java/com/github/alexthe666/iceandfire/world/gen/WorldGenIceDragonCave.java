@@ -4,6 +4,8 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockSilverPile;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
+import com.github.alexthe666.iceandfire.world.WorldGenStructTrait;
+
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class WorldGenIceDragonCave extends WorldGenerator {
+public class WorldGenIceDragonCave extends WorldGenerator implements WorldGenStructTrait{
     public static final ResourceLocation ICEDRAGON_CHEST = LootTableList.register(new ResourceLocation("iceandfire", "ice_dragon_female_cave"));
     public static final ResourceLocation ICEDRAGON_MALE_CHEST = LootTableList.register(new ResourceLocation("iceandfire", "ice_dragon_male_cave"));
     private static final WorldGenCaveStalactites CEILING_DECO = new WorldGenCaveStalactites(IafBlockRegistry.frozenStone);

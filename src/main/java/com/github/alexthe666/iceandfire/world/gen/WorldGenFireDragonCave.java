@@ -4,6 +4,9 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockGoldPile;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
+import com.github.alexthe666.iceandfire.world.WorldGenStructTrait;
+import com.google.gson.JsonObject;
+
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -22,11 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class WorldGenFireDragonCave extends WorldGenerator {
+public class WorldGenFireDragonCave extends WorldGenerator implements WorldGenStructTrait{
     public static final ResourceLocation FIREDRAGON_CHEST = LootTableList.register(new ResourceLocation("iceandfire", "fire_dragon_female_cave"));
     public static final ResourceLocation FIREDRAGON_MALE_CHEST = LootTableList.register(new ResourceLocation("iceandfire", "fire_dragon_male_cave"));
     private static final WorldGenCaveStalactites CEILING_DECO = new WorldGenCaveStalactites(IafBlockRegistry.charedStone);
-    private static boolean isMale;
+    private static boolean isMale;// @local
 
     public static void setGoldPile(World world, BlockPos pos, Random rand) {
         int chance = rand.nextInt(99) + 1;
@@ -168,4 +171,5 @@ public class WorldGenFireDragonCave extends WorldGenerator {
             this.pos = pos;
         }
     }
+
 }

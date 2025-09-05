@@ -118,8 +118,8 @@ minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
     compile "baubles:Baubles:1.12:1.5.2"
 //    compileOnly fg.deobf( "thaumcraft:Thaumcraft:1.12.2:6.1.BETA26" )
     compile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.675"
-    compile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
-
+    //compile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
+compileOnly files( "libs/theoneprobe-1.12-1.4.28-deobf.jar" )
 // https://github.com/iLexiconn/LLibrary/tree/1.12.2
 compileOnly files( "libs/llibrary-1.7.20-1.12.2-dev.jar" )
 // https://github.com/VectorLab/TinkersConstruct
@@ -162,12 +162,17 @@ jar {
     }
 }
 */
-task devJar(type: Jar) {
-    classifier = "dev"
+task deobfJar(type: Jar) {
+    classifier = "deobf"
     from sourceSets.main.output
     manifest {
         attributes "FMLAT": "iceandfire_at.cfg"
     }
+}
+
+artifacts {
+    archives deobfJar
+    archives jar
 }
 
 jar {

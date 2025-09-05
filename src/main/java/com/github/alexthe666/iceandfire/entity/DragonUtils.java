@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +11,7 @@ import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -315,26 +315,28 @@ public class DragonUtils {
     }
 
     public static class notBlacklistedBlock{
-    	public static Set<Block> g1=new HashSet<>();
+    	public static Set<Block> g1=null;
     	public static boolean reverse;
     	
-    	public static void load(String[] p1,boolean p2) {
+    	public static void load(Set<String> p1,boolean p2) {
     		reverse=p2;
-    		g1.clear();
+    		Set<Block> v3=new ObjectOpenHashSet<>();
     		for(String v1:p1) {
     			Block v2=Block.getBlockFromName(v1);
     			if(null==v2) {
     				IceAndFire.logger.error("Invalid value for <Blacklisted Blocks from Dragon>, ignoring: "+v1);
     				continue;
     			}
-    			if(g1.contains(v2)) {
+    			if(v3.contains(v2)) {
     				IceAndFire.logger.error("Duplicate value for <Blacklisted Blocks from Dragon>, ignoring: "+v1);
     				continue;
     			}
-    			g1.add(v2);
+    			v3.add(v2);
     		}
+    		g1=v3;
     	}
     	
+    	// true if not in black list
     	public static boolean run(Block p1) {
     		return reverse==g1.contains(p1);
     	}
@@ -397,26 +399,30 @@ public class DragonUtils {
     }
 
     public static class canDropFromDragonBlockBreak{
-    	public static HashMap<Block,String> g1=new HashMap<>();
+    	public static boolean disallow_mode=true;
+    	public static Set<Block> g1=new HashSet<>();
     	
-    	public static void load(String[] p1) {
-    		g1.clear();
+    	public static void load(Set<String> p1,boolean p2) {
+    		disallow_mode=p2;
+    		Set<Block> v3=new ObjectOpenHashSet<>();
     		for(String v1:p1) {
     			Block v2=Block.getBlockFromName(v1);
     			if(null==v2) {
     				IceAndFire.logger.error("Invalid value for <No-Drop Blocks from Dragon Block Breaking>, ignoring: "+v1);
     				continue;
     			}
-    			if(g1.containsKey(v2)) {
+    			if(v3.contains(v2)) {
     				IceAndFire.logger.error("Duplicate value for <No-Drop Blocks from Dragon Block Breaking>, ignoring: "+v1);
     				continue;
     			}
-    			g1.put(v2,v1);
+    			v3.add(v2);
     		}
+    		g1=v3;
     	}
     	
+    	// return true if prevent drop
     	public static boolean run(Block p1) {
-    		return g1.containsKey(p1);
+    		return disallow_mode==g1.contains(p1);
     	}
     	
         public static boolean run(IBlockState state) {
@@ -427,7 +433,7 @@ public class DragonUtils {
                 }
             }
             return true;*/
-        	return g1.containsKey(state.getBlock());
+        	return disallow_mode==g1.contains(state.getBlock());
         }
     }
 

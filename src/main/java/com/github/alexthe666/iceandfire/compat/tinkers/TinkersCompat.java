@@ -61,13 +61,6 @@ public class TinkersCompat {
     }
 
     private static void init() {
-		int t_1_1=300,
-			t_1_2=200,
-			t_1_3=100,
-			t_2_1=500,
-			t_2_2=250,
-			t_2_3=350;
-    	
         TinkerMaterials.materials.add(MATERIAL_DRAGONBONE);
         TinkerRegistry.integrate(MATERIAL_DRAGONBONE).preInit();
         MATERIAL_DRAGONBONE.addItem(IafItemRegistry.dragonbone, 1, Material.VALUE_Ingot);
@@ -75,9 +68,9 @@ public class TinkersCompat {
         MATERIAL_DRAGONBONE.setCraftable(true);
         MATERIAL_DRAGONBONE.setCastable(false);
         TinkerRegistry.addMaterialStats(MATERIAL_DRAGONBONE,
-                new HeadMaterialStats(200, 3.00f, 6.00f, HarvestLevels.DIAMOND),
-                new HandleMaterialStats(1.3F, 100),
-                new ExtraMaterialStats(150));
+                new HeadMaterialStats(300, 3.00f, 6.00f, HarvestLevels.OBSIDIAN),
+                new HandleMaterialStats(1.3F, 130),
+                new ExtraMaterialStats(200));
         TinkerRegistry.addMaterialStats(MATERIAL_DRAGONBONE, new BowMaterialStats(0.6f, 1.2f, 4F));
         MATERIAL_DRAGONBONE.addTrait(SPLINTERING_II, HEAD);
         MATERIAL_DRAGONBONE.addTrait(SPLINTERS_II, SHAFT);
@@ -90,9 +83,9 @@ public class TinkersCompat {
         MATERIAL_DESERT_MYRMEX.setCraftable(true);
         MATERIAL_DESERT_MYRMEX.setCastable(false);
         TinkerRegistry.addMaterialStats(MATERIAL_DESERT_MYRMEX,
-                new HeadMaterialStats(t_1_1, 4.00f, 5.50f, HarvestLevels.IRON),
-                new HandleMaterialStats(0.7F, t_1_2),
-                new ExtraMaterialStats(t_1_3));
+                new HeadMaterialStats(400, 4.00f, 5.50f, HarvestLevels.DIAMOND),
+                new HandleMaterialStats(0.7F, 300),
+                new ExtraMaterialStats(150));
         TinkerRegistry.addMaterialStats(MATERIAL_DESERT_MYRMEX, new BowMaterialStats(0.5f, 0.7F, 2F));
         MATERIAL_DESERT_MYRMEX.addTrait(HIVE_DEFENDER, HEAD);
         MATERIAL_DESERT_MYRMEX.addTrait(poisonous);
@@ -102,9 +95,9 @@ public class TinkersCompat {
         MATERIAL_JUNGLE_MYRMEX.addItem(IafItemRegistry.myrmex_jungle_chitin, 1, Material.VALUE_Ingot);
         MATERIAL_JUNGLE_MYRMEX.setRepresentativeItem(IafItemRegistry.myrmex_jungle_chitin);
         TinkerRegistry.addMaterialStats(MATERIAL_JUNGLE_MYRMEX,
-                new HeadMaterialStats(t_1_1, 4.00f, 5.50f, HarvestLevels.IRON),
-                new HandleMaterialStats(0.7F, t_1_2),
-                new ExtraMaterialStats(t_1_3));
+                new HeadMaterialStats(400, 4.00f, 5.50f, HarvestLevels.DIAMOND),
+                new HandleMaterialStats(0.7F, 300),
+                new ExtraMaterialStats(150));
         TinkerRegistry.addMaterialStats(MATERIAL_JUNGLE_MYRMEX, new BowMaterialStats(0.5f, 0.7F, 2F));
         MATERIAL_JUNGLE_MYRMEX.addTrait(HIVE_DEFENDER, HEAD);
         MATERIAL_JUNGLE_MYRMEX.addTrait(poisonous);
@@ -115,9 +108,9 @@ public class TinkersCompat {
         MATERIAL_DRAGONSTEEL_FIRE.addItem(IafItemRegistry.dragonsteel_fire_ingot, 1, Material.VALUE_Ingot);
         MATERIAL_DRAGONSTEEL_FIRE.setRepresentativeItem(IafItemRegistry.dragonsteel_fire_ingot);
         TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_FIRE,
-                new HeadMaterialStats(t_2_1, 7.00f, (float) IceAndFire.CONFIG.dragonsteelBaseDamage - 8.0F, HarvestLevels.OBSIDIAN),
-                new HandleMaterialStats(0.4F, t_2_2),
-                new ExtraMaterialStats(t_2_3));
+                new HeadMaterialStats(1500, 7.00f, (float) IceAndFire.CONFIG.dragonsteelBaseDamage - 8.0F, HarvestLevels.COBALT),
+                new HandleMaterialStats(0.4F, 400),
+                new ExtraMaterialStats(510));
         TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_FIRE, new BowMaterialStats(0.9f, 3.0F, 6F));
         MATERIAL_DRAGONSTEEL_FIRE.addTrait(BURN_II, HEAD);
         MATERIAL_DRAGONSTEEL_FIRE.addTrait(sharp);
@@ -129,9 +122,9 @@ public class TinkersCompat {
         MATERIAL_DRAGONSTEEL_ICE.setCraftable(false);
         MATERIAL_DRAGONSTEEL_ICE.setCastable(true);
         TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_ICE,
-                new HeadMaterialStats(t_2_1, 7.00f, (float) IceAndFire.CONFIG.dragonsteelBaseDamage - 8.0F, HarvestLevels.OBSIDIAN),
-                new HandleMaterialStats(0.4F, t_2_2),
-                new ExtraMaterialStats(t_2_3));
+                new HeadMaterialStats(1500, 7.00f, (float) IceAndFire.CONFIG.dragonsteelBaseDamage - 8.0F, HarvestLevels.COBALT),
+                new HandleMaterialStats(0.4F, 400),
+                new ExtraMaterialStats(510));
         TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_ICE, new BowMaterialStats(0.9f, 3.0F, 6F));
         MATERIAL_DRAGONSTEEL_ICE.addTrait(FREEZE_II, HEAD);
         MATERIAL_DRAGONSTEEL_ICE.addTrait(sharp);
@@ -162,9 +155,9 @@ public class TinkersCompat {
             MATERIAL_WEEZER.addItem(IafItemRegistry.weezer_blue_album, 1, Material.VALUE_Ingot);
             MATERIAL_WEEZER.setRepresentativeItem(IafItemRegistry.weezer_blue_album);
             TinkerRegistry.addMaterialStats(MATERIAL_WEEZER,
-                    new HeadMaterialStats(500, 5.00f, 10.00f, HarvestLevels.OBSIDIAN),
-                    new HandleMaterialStats(1.5F, 65),
-                    new ExtraMaterialStats(335));
+                    new HeadMaterialStats(1500, 5.00f, 10.00f, HarvestLevels.COBALT),
+                    new HandleMaterialStats(1.5F, 100),
+                    new ExtraMaterialStats(500));
             TinkerRegistry.addMaterialStats(MATERIAL_WEEZER, new BowMaterialStats(1.5f, 1.2f, 8F));
             MATERIAL_WEEZER.addTrait(IN_THE_GARAGE);
             MATERIAL_WEEZER.addTrait(SWEATER_SONG);

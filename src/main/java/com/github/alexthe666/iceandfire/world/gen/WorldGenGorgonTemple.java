@@ -68,7 +68,7 @@ public class WorldGenGorgonTemple extends WorldGenerator {
         position = position.add(rand.nextInt(8) - 4, 1, rand.nextInt(8) - 4);
         MinecraftServer server = worldIn.getMinecraftServer();
         BlockPos height = getGround(position, worldIn);
-        IBlockState dirt = worldIn.getBlockState(height.down(2));
+        //IBlockState dirt = worldIn.getBlockState(height.down(2));
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
         Template template = templateManager.getTemplate(server, STRUCTURE);
         PlacementSettings settings = new PlacementSettings().setRotation(getRotationFromFacing(facing));

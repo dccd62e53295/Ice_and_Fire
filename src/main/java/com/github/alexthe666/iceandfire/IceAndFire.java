@@ -10,11 +10,13 @@ import com.github.alexthe666.iceandfire.entity.IafVillagerRegistry;
 import com.github.alexthe666.iceandfire.world.IafWorldRegistry;
 import com.github.alexthe666.iceandfire.event.ServerEvents;
 import com.github.alexthe666.iceandfire.event.WorldGenEvents;
+import com.github.alexthe666.iceandfire.event.worldgen.WGEventRoot;
 import com.github.alexthe666.iceandfire.loot.CustomizeToDragon;
 import com.github.alexthe666.iceandfire.loot.CustomizeToSeaSerpent;
 import com.github.alexthe666.iceandfire.message.*;
 import com.github.alexthe666.iceandfire.misc.CreativeTab;
 import com.github.alexthe666.iceandfire.world.village.ComponentAnimalFarm;
+import com.github.alexthe666.iceandfire.world.village.MapGenPixieVillage;
 import com.github.alexthe666.iceandfire.world.village.MapGenSnowVillage;
 import com.github.alexthe666.iceandfire.world.village.VillageAnimalFarmCreator;
 import net.ilexiconn.llibrary.server.network.NetworkWrapper;
@@ -27,7 +29,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -73,32 +74,36 @@ public class IceAndFire {
     public static DamageSource dragonIce;
     public static DamageSource gorgon;
     public static IceAndFireConfig CONFIG = new IceAndFireConfig();
-    public static Configuration config;
     public static final boolean DEBUG = false;
 
-    public static void loadConfig() {
-        File configFile = new File(Loader.instance().getConfigDir(), "ice_and_fire.cfg");
-        if (!configFile.exists()) {
-            try {
-                configFile.createNewFile();
-            } catch (Exception e) {
-                logger.warn("Could not create a new Ice and Fire config file.");
-                logger.warn(e.getLocalizedMessage());
-            }
-        }
-        config = new Configuration(configFile);
-        config.load();
+    private static void syncConfigPreInit() {
+    	File v1=new File(Loader.instance().getConfigDir(), "ice_and_fire");
+        try {
+        	if(!v1.isDirectory()) {
+        		v1.mkdirs();
+        	}
+			CONFIG.preInit(new File(v1,"main.cfg"));
+			IceAndFireConfigExtra.preInit(new File(v1,"main.json"));
+		} catch (Exception e) {
+			logger.fatal("unable to load config file from path: {}",v1.getAbsolutePath());
+			logger.catching(e);
+		}
     }
-
-    public static void syncConfig() {
-        CONFIG.init(config);
-        config.save();
+    
+    private static void syncConfigPostInit() {
+    	File v1=new File(Loader.instance().getConfigDir(), "ice_and_fire");
+        try {
+			IceAndFireConfigExtra.postInit();
+			WGEventRoot.postInit(new File(v1,"worldgenevent.json"));
+		} catch (Exception e) {
+			logger.fatal("unable to load config file from path: {}",v1.getAbsolutePath());
+			logger.catching(e);
+		}
     }
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        loadConfig();
-        syncConfig();
+        syncConfigPreInit();
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
         TAB_ITEMS = new CreativeTab(MODID + "_items");
         TAB_BLOCKS = new CreativeTab(MODID + "_blocks");
@@ -122,6 +127,7 @@ public class IceAndFire {
         logger.info("The watcher waits on the northern wall");
         logger.info("A daughter picks up a warrior's sword");
         MapGenStructureIO.registerStructure(MapGenSnowVillage.Start.class, "SnowVillageStart");
+        MapGenStructureIO.registerStructure(MapGenPixieVillage.Start.class, "PixieVillageStart");// debug
         MapGenStructureIO.registerStructureComponent(ComponentAnimalFarm.class, "AnimalFarm");
         VillagerRegistry.instance().registerVillageCreationHandler(new VillageAnimalFarmCreator());
         PROXY.render();
@@ -163,15 +169,16 @@ public class IceAndFire {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        PROXY.postRender();
-        TinkersCompatBridge.loadTinkersPostInitCompat();
-        IafRecipeRegistry.postInit();
         logger.info("A brother bound to a love he must hide");
+        PROXY.postRender();
         logger.info("The younger's armor is worn in the mind");
+        TinkersCompatBridge.loadTinkersPostInitCompat();
         logger.info("A cold iron throne holds a boy barely grown");
         logger.info("And now it is known");
         logger.info("A claim to the prize, a crown laced in lies");
+        IafRecipeRegistry.postInit();
         logger.info("You win or you die");
+        syncConfigPostInit();
         logger.info("Damn season 8 really sucked didn't it");
     }
 }

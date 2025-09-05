@@ -3,6 +3,8 @@ package com.github.alexthe666.iceandfire.world.gen;
 import com.github.alexthe666.iceandfire.block.BlockGoldPile;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityCyclops;
+import com.github.alexthe666.iceandfire.world.WorldGenStructTrait;
+
 import net.minecraft.block.BlockBone;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.passive.EntitySheep;
@@ -19,7 +21,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 import java.util.Random;
 
-public class WorldGenCyclopsCave extends WorldGenerator {
+public class WorldGenCyclopsCave extends WorldGenerator implements WorldGenStructTrait{
 
     public static final ResourceLocation CYCLOPS_CHEST = LootTableList.register(new ResourceLocation("iceandfire", "cyclops_cave"));
 

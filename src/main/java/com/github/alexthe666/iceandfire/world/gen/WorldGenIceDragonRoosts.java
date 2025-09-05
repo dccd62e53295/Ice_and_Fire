@@ -3,6 +3,9 @@ package com.github.alexthe666.iceandfire.world.gen;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
 import com.github.alexthe666.iceandfire.event.WorldGenEvents;
+import com.github.alexthe666.iceandfire.event.worldgen.WorldGenUtil;
+import com.github.alexthe666.iceandfire.world.WorldGenStructTrait;
+
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -17,7 +20,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-public class WorldGenIceDragonRoosts extends WorldGenerator {
+public class WorldGenIceDragonRoosts extends WorldGenerator implements WorldGenStructTrait{
     private static boolean isMale;
 
     @Override
@@ -89,15 +92,14 @@ public class WorldGenIceDragonRoosts extends WorldGenerator {
                         BlockPos height = worldIn.getHeight(blockpos);
                         new WorldGenRoostPile(IafBlockRegistry.dragon_ice).generate(worldIn, rand, height);
                     }
-                    if (dist < 0.3D && rand.nextInt(isMale ? 250 : 400) == 0) {
-                        BlockPos height = WorldGenEvents.degradeSurface(worldIn, worldIn.getHeight(blockpos));
-                        new WorldGenRoostGoldPile(IafBlockRegistry.silverPile).generate(worldIn, rand, height);
+                    BlockPos height_df = WorldGenUtil.degradeSurface(worldIn, worldIn.getHeight(blockpos));
+                    if (null!=height_df&&dist < 0.3D && rand.nextInt(isMale ? 250 : 400) == 0) {
+                        new WorldGenRoostGoldPile(IafBlockRegistry.silverPile).generate(worldIn, rand, height_df);
                     }
-                    if (dist < 0.3D && rand.nextInt(isMale ? 500 : 700) == 0) {
-                        BlockPos height = WorldGenEvents.degradeSurface(worldIn, worldIn.getHeight(blockpos));
-                        worldIn.setBlockState(height, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.HORIZONTALS[new Random().nextInt(3)]), 2);
-                        if (worldIn.getBlockState(height).getBlock() instanceof BlockChest) {
-                            TileEntity tileentity1 = worldIn.getTileEntity(height);
+                    if (null!=height_df&&dist < 0.3D && rand.nextInt(isMale ? 500 : 700) == 0) {
+                        worldIn.setBlockState(height_df, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.HORIZONTALS[new Random().nextInt(3)]), 2);
+                        if (worldIn.getBlockState(height_df).getBlock() instanceof BlockChest) {
+                            TileEntity tileentity1 = worldIn.getTileEntity(height_df);
                             if (tileentity1 instanceof TileEntityChest && !tileentity1.isInvalid()) {
                                 ((TileEntityChest) tileentity1).setLootTable(WorldGenIceDragonCave.ICEDRAGON_CHEST, new Random().nextLong());
                             }

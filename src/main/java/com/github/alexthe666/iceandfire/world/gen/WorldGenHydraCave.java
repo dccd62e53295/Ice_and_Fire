@@ -1,6 +1,8 @@
 package com.github.alexthe666.iceandfire.world.gen;
 
 import com.github.alexthe666.iceandfire.entity.EntityHydra;
+import com.github.alexthe666.iceandfire.world.WorldGenStructTrait;
+
 import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -17,7 +19,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 import java.util.Random;
 
-public class WorldGenHydraCave extends WorldGenerator {
+public class WorldGenHydraCave extends WorldGenerator implements WorldGenStructTrait{
 
     public static final ResourceLocation HYDRA_CHEST = LootTableList.register(new ResourceLocation("iceandfire", "hydra_cave"));
     protected static final WorldGenSwamp SWAMP_FEATURE = new WorldGenSwamp();

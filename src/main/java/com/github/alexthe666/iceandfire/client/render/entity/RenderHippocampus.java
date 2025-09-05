@@ -47,8 +47,6 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
     @Override
     protected ResourceLocation getEntityTexture(EntityHippocampus entity) {
         switch (entity.getVariant()) {
-            default:
-                return entity.isBlinking() ? VARIANT_0_BLINK : VARIANT_0;
             case 1:
                 return entity.isBlinking() ? VARIANT_1_BLINK : VARIANT_1;
             case 2:
@@ -59,6 +57,8 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
                 return entity.isBlinking() ? VARIANT_4_BLINK : VARIANT_4;
             case 5:
                 return entity.isBlinking() ? VARIANT_5_BLINK : VARIANT_5;
+            default:
+                return entity.isBlinking() ? VARIANT_0_BLINK : VARIANT_0;
 
         }
     }
